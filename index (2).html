@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arms transfer races, 1950–2024</title>
+<meta name="description" content="Animated rankings of the leading recipients of Chinese and U.S. arms exports, 1950–2024.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#ECEFF3; --surface:#FFFFFF; --ink:#19222C; --muted:#5B6773;
+    --line:#D2D9E1; --accent:#35617F; --accent-ink:#294d66;
+    --shadow:0 18px 48px -24px rgba(25,34,44,.45);
+    --maxw:960px;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{ --paper:#11161C; --surface:#FFFFFF; --ink:#E7ECF2; --muted:#9AA6B2;
+           --line:#283340; --accent:#6FA0C4; --accent-ink:#8ab4d4;
+           --shadow:0 18px 48px -22px rgba(0,0,0,.7); }
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    line-height:1.55; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:clamp(28px,6vw,72px) clamp(20px,5vw,40px);}
+  header{max-width:34em;}
+  h1{
+    font-family:"Archivo",sans-serif; font-weight:800;
+    font-size:clamp(2rem,5.2vw,3.4rem); line-height:1.02;
+    letter-spacing:-.02em; margin:0 0 .5rem;
+  }
+  .dek{font-size:clamp(1rem,2vw,1.15rem); color:var(--muted); margin:0; max-width:46ch;}
+
+  .races{margin:clamp(34px,6vw,60px) 0 0; border-top:1px solid var(--line);}
+  .race{
+    display:grid; grid-template-columns:minmax(0,220px) 1fr; gap:clamp(16px,3vw,32px);
+    align-items:center; padding:clamp(20px,3.2vw,32px) 0;
+    border-bottom:1px solid var(--line); text-decoration:none; color:inherit;
+    transition:background-color .18s ease;
+  }
+  .race:hover{background:color-mix(in srgb,var(--accent) 7%,transparent);}
+  .race:focus-visible{outline:2px solid var(--accent); outline-offset:4px;}
+  .thumb{
+    aspect-ratio:3/2; background:var(--surface); border:1px solid var(--line);
+    border-radius:6px; overflow:hidden; box-shadow:var(--shadow);
+  }
+  .thumb img{width:100%; height:100%; object-fit:cover; object-position:left center; display:block;}
+  .race h2{font-family:"Archivo",sans-serif; font-weight:700; font-size:1.3rem; margin:0 0 .35rem; letter-spacing:-.01em;}
+  .race p{margin:0 0 .6rem; color:var(--muted); font-size:.97rem; max-width:48ch;}
+  .go{font-weight:600; color:var(--accent-ink); font-size:.95rem;}
+  @media (prefers-color-scheme:dark){ .go{color:var(--accent);} }
+
+  footer{margin-top:clamp(36px,6vw,56px); color:var(--muted); font-size:.86rem; line-height:1.7;}
+  footer a{color:inherit; text-decoration:underline; text-underline-offset:2px;}
+
+  @media (max-width:560px){
+    .race{grid-template-columns:1fr;}
+    .thumb{max-width:360px;}
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Arms transfer races, 1950–2024</h1>
+      <p class="dek">Seventy-five years of the global arms trade, watched one year at a time. Each animation ranks the leading recipients of a supplier's exports as their totals accumulate.</p>
+    </header>
+
+    <main class="races">
+      <a class="race" href="arms_china_1950_2024/">
+        <span class="thumb"><img src="arms_china_1950_2024/index_frames/frame0002220.png" alt="Final ranking of the countries importing arms from China" loading="lazy"></span>
+        <span class="race-text">
+          <h2>Arms imports from China</h2>
+          <p>Where Chinese arms went, from a handful of Cold War partners to a broad modern client base across Asia and Africa.</p>
+          <span class="go">Watch the race</span>
+        </span>
+      </a>
+
+      <a class="race" href="arms_usa_1950_2024/">
+        <span class="thumb"><img src="arms_usa_1950_2024/index_frames/frame0002220.png" alt="Final ranking of the countries importing arms from the United States" loading="lazy"></span>
+        <span class="race-text">
+          <h2>Arms imports from the United States</h2>
+          <p>The reach of U.S. arms exports across the postwar decades, and how its leading recipients shifted with each era.</p>
+          <span class="go">Watch the race</span>
+        </span>
+      </a>
+    </main>
+
+    <footer>
+      <p>Data: SIPRI Arms Transfers Database (trend-indicator values, in millions). Built by Xin-You (James) Chen. <a href="https://github.com/xyjameschen/race-bars">Source and data on GitHub</a>.</p>
+    </footer>
+  </div>
+</body>
+</html>
