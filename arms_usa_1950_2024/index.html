@@ -1,249 +1,160 @@
-
-<link rel="stylesheet"
-href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-<script language="javascript">
-  function isInternetExplorer() {
-    ua = navigator.userAgent;
-    /* MSIE used to detect old browsers and Trident used to newer ones*/
-    return ua.indexOf("MSIE ") > -1 || ua.indexOf("Trident/") > -1;
-  }
-
-  /* Define the Animation class */
-  function Animation(frames, img_id, slider_id, interval, loop_select_id){
-    this.img_id = img_id;
-    this.slider_id = slider_id;
-    this.loop_select_id = loop_select_id;
-    this.interval = interval;
-    this.current_frame = 0;
-    this.direction = 0;
-    this.timer = null;
-    this.frames = new Array(frames.length);
-
-    for (var i=0; i<frames.length; i++)
-    {
-     this.frames[i] = new Image();
-     this.frames[i].src = frames[i];
-    }
-    var slider = document.getElementById(this.slider_id);
-    slider.max = this.frames.length - 1;
-    if (isInternetExplorer()) {
-        // switch from oninput to onchange because IE <= 11 does not conform
-        // with W3C specification. It ignores oninput and onchange behaves
-        // like oninput. In contrast, Microsoft Edge behaves correctly.
-        slider.setAttribute('onchange', slider.getAttribute('oninput'));
-        slider.setAttribute('oninput', null);
-    }
-    this.set_frame(this.current_frame);
-  }
-
-  Animation.prototype.get_loop_state = function(){
-    var button_group = document[this.loop_select_id].state;
-    for (var i = 0; i < button_group.length; i++) {
-        var button = button_group[i];
-        if (button.checked) {
-            return button.value;
-        }
-    }
-    return undefined;
-  }
-
-  Animation.prototype.set_frame = function(frame){
-    this.current_frame = frame;
-    document.getElementById(this.img_id).src =
-            this.frames[this.current_frame].src;
-    document.getElementById(this.slider_id).value = this.current_frame;
-  }
-
-  Animation.prototype.next_frame = function()
-  {
-    this.set_frame(Math.min(this.frames.length - 1, this.current_frame + 1));
-  }
-
-  Animation.prototype.previous_frame = function()
-  {
-    this.set_frame(Math.max(0, this.current_frame - 1));
-  }
-
-  Animation.prototype.first_frame = function()
-  {
-    this.set_frame(0);
-  }
-
-  Animation.prototype.last_frame = function()
-  {
-    this.set_frame(this.frames.length - 1);
-  }
-
-  Animation.prototype.slower = function()
-  {
-    this.interval /= 0.7;
-    if(this.direction > 0){this.play_animation();}
-    else if(this.direction < 0){this.reverse_animation();}
-  }
-
-  Animation.prototype.faster = function()
-  {
-    this.interval *= 0.7;
-    if(this.direction > 0){this.play_animation();}
-    else if(this.direction < 0){this.reverse_animation();}
-  }
-
-  Animation.prototype.anim_step_forward = function()
-  {
-    this.current_frame += 1;
-    if(this.current_frame < this.frames.length){
-      this.set_frame(this.current_frame);
-    }else{
-      var loop_state = this.get_loop_state();
-      if(loop_state == "loop"){
-        this.first_frame();
-      }else if(loop_state == "reflect"){
-        this.last_frame();
-        this.reverse_animation();
-      }else{
-        this.pause_animation();
-        this.last_frame();
-      }
-    }
-  }
-
-  Animation.prototype.anim_step_reverse = function()
-  {
-    this.current_frame -= 1;
-    if(this.current_frame >= 0){
-      this.set_frame(this.current_frame);
-    }else{
-      var loop_state = this.get_loop_state();
-      if(loop_state == "loop"){
-        this.last_frame();
-      }else if(loop_state == "reflect"){
-        this.first_frame();
-        this.play_animation();
-      }else{
-        this.pause_animation();
-        this.first_frame();
-      }
-    }
-  }
-
-  Animation.prototype.pause_animation = function()
-  {
-    this.direction = 0;
-    if (this.timer){
-      clearInterval(this.timer);
-      this.timer = null;
-    }
-  }
-
-  Animation.prototype.play_animation = function()
-  {
-    this.pause_animation();
-    this.direction = 1;
-    var t = this;
-    if (!this.timer) this.timer = setInterval(function() {
-        t.anim_step_forward();
-    }, this.interval);
-  }
-
-  Animation.prototype.reverse_animation = function()
-  {
-    this.pause_animation();
-    this.direction = -1;
-    var t = this;
-    if (!this.timer) this.timer = setInterval(function() {
-        t.anim_step_reverse();
-    }, this.interval);
-  }
-</script>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arms imports from the United States, 1950–2024</title>
+<meta name="description" content="The leading recipients of U.S. arms exports, counting up year by year as running totals accumulate from 1950 to 2024.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-.animation {
-    display: inline-block;
-    text-align: center;
-}
-input[type=range].anim-slider {
-    width: 374px;
-    margin-left: auto;
-    margin-right: auto;
-}
-.anim-buttons {
-    margin: 8px 0px;
-}
-.anim-buttons button {
-    padding: 0;
-    width: 36px;
-}
-.anim-state label {
-    margin-right: 8px;
-}
-.anim-state input {
-    margin: 0;
-    vertical-align: middle;
-}
+  :root{
+    --paper:#ECEFF3; --surface:#FFFFFF; --ink:#19222C; --muted:#5B6773;
+    --line:#D2D9E1; --accent:#35617F; --accent-ink:#294d66; --track:#D7DEE6;
+    --shadow:0 18px 48px -24px rgba(25,34,44,.45); --maxw:860px;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{ --paper:#11161C; --surface:#FFFFFF; --ink:#E7ECF2; --muted:#9AA6B2;
+           --line:#283340; --accent:#6FA0C4; --accent-ink:#8ab4d4; --track:#2B3642;
+           --shadow:0 18px 48px -22px rgba(0,0,0,.7); }
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0; background:var(--paper); color:var(--ink);
+    font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    line-height:1.55; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:clamp(22px,5vw,56px) clamp(18px,5vw,36px);}
+  .back{display:inline-block; color:var(--muted); text-decoration:none; font-size:.9rem; margin-bottom:1.4rem;}
+  .back:hover{color:var(--ink);} .back:focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
+  h1{font-family:"Archivo",sans-serif; font-weight:800; font-size:clamp(1.7rem,4.4vw,2.7rem);
+     line-height:1.04; letter-spacing:-.02em; margin:0 0 .45rem;}
+  .dek{font-size:clamp(.98rem,1.8vw,1.1rem); color:var(--muted); margin:0 0 clamp(20px,4vw,30px); max-width:52ch;}
+
+  .stage{background:var(--surface); border:1px solid var(--line); border-radius:8px;
+         box-shadow:var(--shadow); padding:clamp(10px,2vw,18px); overflow:hidden;}
+  .stage img{display:block; width:100%; height:auto; border-radius:3px;}
+
+  .controls{display:flex; align-items:center; gap:14px; margin-top:18px; flex-wrap:wrap;}
+  .btn{appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink);
+       width:46px; height:46px; border-radius:50%; display:grid; place-items:center; cursor:pointer;
+       transition:border-color .15s ease, transform .05s ease;}
+  .btn:hover{border-color:var(--accent);} .btn:active{transform:scale(.95);}
+  .btn:focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
+  .btn.primary{background:var(--accent); border-color:var(--accent); color:#fff; width:54px; height:54px;}
+  @media (prefers-color-scheme:dark){ .btn.primary{color:#0e141a;} }
+  .btn svg{width:20px; height:20px; display:block;} .btn.primary svg{width:24px; height:24px;}
+
+  .scrub{flex:1 1 220px; display:flex; align-items:center;}
+  input[type=range]{ -webkit-appearance:none; appearance:none; width:100%; height:4px; border-radius:4px;
+    background:var(--track); outline:none; cursor:pointer;}
+  input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:16px; height:16px; border-radius:50%;
+    background:var(--accent); border:2px solid var(--surface); box-shadow:0 1px 3px rgba(0,0,0,.3);}
+  input[type=range]::-moz-range-thumb{ width:16px; height:16px; border:2px solid var(--surface); border-radius:50%; background:var(--accent);}
+  input[type=range]:focus-visible{outline:2px solid var(--accent); outline-offset:4px;}
+
+  .speeds{display:flex; gap:4px; background:var(--surface); border:1px solid var(--line); border-radius:999px; padding:3px;}
+  .speeds button{appearance:none; border:none; background:transparent; color:var(--muted); font:inherit;
+    font-size:.82rem; font-weight:600; padding:5px 11px; border-radius:999px; cursor:pointer;}
+  .speeds button[aria-pressed=true]{background:var(--accent); color:#fff;}
+  @media (prefers-color-scheme:dark){ .speeds button[aria-pressed=true]{color:#0e141a;} }
+  .speeds button:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+
+  .caption{margin-top:clamp(20px,4vw,28px); color:var(--muted); font-size:.85rem; line-height:1.7; max-width:60ch;}
+  .caption a{color:inherit; text-underline-offset:2px;}
+
+  @media (max-width:520px){
+    .controls{gap:10px;} .scrub{order:3; flex-basis:100%;}
+  }
 </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back" href="../">Back to all races</a>
+    <h1>Arms imports from the United States, 1950–2024</h1>
+    <p class="dek">The leading recipients of U.S. arms exports, counting up year by year as running totals accumulate from 1950 to 2024.</p>
 
-<div class="animation">
-  <img id="_anim_imgeab971e7fbd5448db60dbcec35af0c73">
-  <div class="anim-controls">
-    <input id="_anim_slidereab971e7fbd5448db60dbcec35af0c73" type="range" class="anim-slider"
-           name="points" min="0" max="1" step="1" value="0"
-           oninput="animeab971e7fbd5448db60dbcec35af0c73.set_frame(parseInt(this.value));">
-    <div class="anim-buttons">
-      <button title="Decrease speed" aria-label="Decrease speed" onclick="animeab971e7fbd5448db60dbcec35af0c73.slower()">
-          <i class="fa fa-minus"></i></button>
-      <button title="First frame" aria-label="First frame" onclick="animeab971e7fbd5448db60dbcec35af0c73.first_frame()">
-        <i class="fa fa-fast-backward"></i></button>
-      <button title="Previous frame" aria-label="Previous frame" onclick="animeab971e7fbd5448db60dbcec35af0c73.previous_frame()">
-          <i class="fa fa-step-backward"></i></button>
-      <button title="Play backwards" aria-label="Play backwards" onclick="animeab971e7fbd5448db60dbcec35af0c73.reverse_animation()">
-          <i class="fa fa-play fa-flip-horizontal"></i></button>
-      <button title="Pause" aria-label="Pause" onclick="animeab971e7fbd5448db60dbcec35af0c73.pause_animation()">
-          <i class="fa fa-pause"></i></button>
-      <button title="Play" aria-label="Play" onclick="animeab971e7fbd5448db60dbcec35af0c73.play_animation()">
-          <i class="fa fa-play"></i></button>
-      <button title="Next frame" aria-label="Next frame" onclick="animeab971e7fbd5448db60dbcec35af0c73.next_frame()">
-          <i class="fa fa-step-forward"></i></button>
-      <button title="Last frame" aria-label="Last frame" onclick="animeab971e7fbd5448db60dbcec35af0c73.last_frame()">
-          <i class="fa fa-fast-forward"></i></button>
-      <button title="Increase speed" aria-label="Increase speed" onclick="animeab971e7fbd5448db60dbcec35af0c73.faster()">
-          <i class="fa fa-plus"></i></button>
+    <div class="stage">
+      <img id="stage" alt="Animated bar chart ranking the top recipients, advancing year by year">
     </div>
-    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_selecteab971e7fbd5448db60dbcec35af0c73"
-          class="anim-state">
-      <input type="radio" name="state" value="once" id="_anim_radio1_eab971e7fbd5448db60dbcec35af0c73"
-             >
-      <label for="_anim_radio1_eab971e7fbd5448db60dbcec35af0c73">Once</label>
-      <input type="radio" name="state" value="loop" id="_anim_radio2_eab971e7fbd5448db60dbcec35af0c73"
-             checked>
-      <label for="_anim_radio2_eab971e7fbd5448db60dbcec35af0c73">Loop</label>
-      <input type="radio" name="state" value="reflect" id="_anim_radio3_eab971e7fbd5448db60dbcec35af0c73"
-             >
-      <label for="_anim_radio3_eab971e7fbd5448db60dbcec35af0c73">Reflect</label>
-    </form>
+
+    <div class="controls">
+      <button class="btn primary" id="playBtn" aria-label="Play">
+        <svg id="playIcon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+      <button class="btn" id="restartBtn" aria-label="Restart from 1950">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/></svg>
+      </button>
+      <span class="scrub"><input type="range" id="scrub" min="0" max="2220" value="0" step="1" aria-label="Timeline position"></span>
+      <span class="speeds" role="group" aria-label="Playback speed">
+        <button data-speed="0.5" aria-pressed="false">0.5×</button>
+        <button data-speed="1" aria-pressed="true">1×</button>
+        <button data-speed="2" aria-pressed="false">2×</button>
+      </span>
+    </div>
+
+    <p class="caption">Data: SIPRI Arms Transfers Database, trend-indicator values in millions. Figures are running totals of deliveries. Source and underlying data on <a href="https://github.com/xyjameschen/race-bars">GitHub</a>.</p>
   </div>
-</div>
 
+<script>
+(function(){
+  var TOTAL = 2221, BASE = 33;
+  var pad = function(n){ return ("0000000"+n).slice(-7); };
+  var src = function(i){ return "index_frames/frame"+pad(i)+".png"; };
 
-<script language="javascript">
-  /* Instantiate the Animation class. */
-  /* The IDs given should match those used in the template above. */
-  (function() {
-    var img_id = "_anim_imgeab971e7fbd5448db60dbcec35af0c73";
-    var slider_id = "_anim_slidereab971e7fbd5448db60dbcec35af0c73";
-    var loop_select_id = "_anim_loop_selecteab971e7fbd5448db60dbcec35af0c73";
-    var frames = new Array(2221);
-    
-  for (var i=0; i<2221; i++){
-    frames[i] = "index_frames/frame" + ("0000000" + i).slice(-7) +
-                ".png";
+  var img = document.getElementById("stage");
+  var playBtn = document.getElementById("playBtn");
+  var playIcon = document.getElementById("playIcon");
+  var scrub = document.getElementById("scrub");
+  var restartBtn = document.getElementById("restartBtn");
+  var ICON_PLAY = "M8 5v14l11-7z";
+  var ICON_PAUSE = "M7 5h3v14H7zM14 5h3v14h-3z";
+
+  var frame = 0, playing = false, speed = 1, timer = null;
+
+  function render(i){ frame = i; img.src = src(i); scrub.value = i; }
+  function setPlayUI(on){
+    playIcon.setAttribute("d", on ? ICON_PAUSE : ICON_PLAY);
+    playBtn.setAttribute("aria-label", on ? "Pause" : "Play");
+  }
+  function stop(){ if(timer){ clearInterval(timer); timer=null; } playing=false; setPlayUI(false); }
+  function start(){
+    if(playing) return; playing=true; setPlayUI(true);
+    timer = setInterval(function(){
+      render(frame+1 >= TOTAL ? 0 : frame+1);
+    }, BASE/speed);
+  }
+  function toggle(){ playing ? stop() : start(); }
+
+  playBtn.addEventListener("click", toggle);
+  restartBtn.addEventListener("click", function(){ render(0); if(!playing) render(0); });
+  scrub.addEventListener("input", function(){ stop(); render(parseInt(this.value,10)); });
+
+  var speedBtns = document.querySelectorAll(".speeds button");
+  speedBtns.forEach(function(b){
+    b.addEventListener("click", function(){
+      speed = parseFloat(b.dataset.speed);
+      speedBtns.forEach(function(x){ x.setAttribute("aria-pressed", x===b ? "true":"false"); });
+      if(playing){ stop(); start(); }
+    });
+  });
+
+  // Background prefetch so scrubbing and looping stay smooth.
+  var p = 0;
+  var idle = window.requestIdleCallback || function(fn){ return setTimeout(fn, 32); };
+  function prefetch(){
+    if(p >= TOTAL) return;
+    var im = new Image(); im.src = src(p); p++;
+    idle(prefetch);
   }
 
-
-    /* set a timeout to make sure all the above elements are created before
-       the object is initialized. */
-    setTimeout(function() {
-        animeab971e7fbd5448db60dbcec35af0c73 = new Animation(frames, img_id, slider_id, 33.0,
-                                 loop_select_id);
-    }, 0);
-  })()
+  render(0);
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  window.addEventListener("load", function(){
+    prefetch();
+    if(!reduce) start();
+  });
+})();
 </script>
+</body>
+</html>
